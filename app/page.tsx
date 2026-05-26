@@ -8,10 +8,8 @@ type Submission = { shortcode: string; submittedAt: number };
 
 async function getSubmissions(): Promise<Submission[]> {
   try {
-    const raw: string[] = await kv.lrange('submissions', 0, -1);
-    return raw
-      .map(entry => { try { return JSON.parse(entry) as Submission; } catch { return null; } })
-      .filter((s): s is Submission => s !== null);
+    const raw = await kv.lrange<Submission>('submissions', 0, -1);
+    return raw.filter((s): s is Submission => s !== null && typeof s === 'object');
   } catch {
     return [];
   }
