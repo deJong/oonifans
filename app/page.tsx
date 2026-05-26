@@ -1,5 +1,7 @@
 import { kv } from '@vercel/kv';
 import SubmitForm from './SubmitForm';
+
+export const dynamic = 'force-dynamic';
 import styles from './page.module.css';
 
 type Submission = { shortcode: string; submittedAt: number };
