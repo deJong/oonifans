@@ -53,17 +53,34 @@ export default async function Home() {
         </div>
       ) : (
         <main className={styles.grid}>
-          {submissions.map(({ shortcode }) => (
-            <div key={shortcode} className={styles.cell}>
-              <iframe
-                src={`https://www.instagram.com/p/${shortcode}/embed/`}
-                loading="lazy"
-                allowFullScreen
-                title={`Pizza ${shortcode}`}
-                className={styles.embed}
-              />
-            </div>
-          ))}
+          {submissions.map(({ shortcode }, i) => {
+            const gradients = [
+              'linear-gradient(135deg, #b71c1c, #e65100)',
+              'linear-gradient(135deg, #1b1b2f, #4a148c)',
+              'linear-gradient(135deg, #1a2a1a, #2e7d32)',
+              'linear-gradient(135deg, #0d2137, #01579b)',
+              'linear-gradient(135deg, #3e1a00, #bf360c)',
+              'linear-gradient(135deg, #1a0533, #6a1b9a)',
+            ];
+            const gradient = gradients[i % gradients.length];
+            return (
+              <a
+                key={shortcode}
+                href={`https://www.instagram.com/p/${shortcode}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.card}
+              >
+                <div className={styles.cardBg} style={{ background: gradient }}>
+                  <span className={styles.cardEmoji}>🍕</span>
+                </div>
+                <div className={styles.cardOverlay}>
+                  <span className={styles.cardIcon}>↗</span>
+                  <span className={styles.cardLabel}>View on Instagram</span>
+                </div>
+              </a>
+            );
+          })}
         </main>
       )}
 
