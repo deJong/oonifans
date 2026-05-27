@@ -4,7 +4,7 @@ import SubmitForm from './SubmitForm';
 export const dynamic = 'force-dynamic';
 import styles from './page.module.css';
 
-type Submission = { shortcode: string; submittedAt: number };
+type Submission = { shortcode: string; thumbnail?: string | null; submittedAt: number };
 
 async function getSubmissions(): Promise<Submission[]> {
   try {
@@ -53,7 +53,7 @@ export default async function Home() {
         </div>
       ) : (
         <main className={styles.grid}>
-          {submissions.map(({ shortcode }, i) => {
+          {submissions.map(({ shortcode, thumbnail }, i) => {
             const gradients = [
               'linear-gradient(135deg, #b71c1c, #e65100)',
               'linear-gradient(135deg, #1b1b2f, #4a148c)',
@@ -62,7 +62,6 @@ export default async function Home() {
               'linear-gradient(135deg, #3e1a00, #bf360c)',
               'linear-gradient(135deg, #1a0533, #6a1b9a)',
             ];
-            const gradient = gradients[i % gradients.length];
             return (
               <a
                 key={shortcode}
@@ -71,9 +70,18 @@ export default async function Home() {
                 rel="noopener noreferrer"
                 className={styles.card}
               >
-                <div className={styles.cardBg} style={{ background: gradient }}>
-                  <span className={styles.cardEmoji}>🍕</span>
-                </div>
+                {thumbnail ? (
+                  <img
+                    src={thumbnail}
+                    alt="Ooni pizza"
+                    className={styles.cardImg}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className={styles.cardBg} style={{ background: gradients[i % gradients.length] }}>
+                    <span className={styles.cardEmoji}>🍕</span>
+                  </div>
+                )}
                 <div className={styles.cardOverlay}>
                   <span className={styles.cardIcon}>↗</span>
                   <span className={styles.cardLabel}>View on Instagram</span>

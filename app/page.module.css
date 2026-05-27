@@ -79,6 +79,18 @@
   opacity: 1;
 }
 
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .cardImg {
+  transform: scale(1.04);
+}
+
 .cardBg {
   width: 100%;
   height: 100%;
