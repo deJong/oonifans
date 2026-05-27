@@ -83,8 +83,9 @@ export default async function Home() {
                   </div>
                 )}
                 <div className={styles.cardOverlay}>
-                  <span className={styles.cardIcon}>↗</span>
-                  <span className={styles.cardLabel}>View on Instagram</span>
+                  <span className={styles.cardIcon}>🔒</span>
+                  <span className={styles.cardLabel}>Unlock this pizza</span>
+                  <span className={styles.cardSub}>view on Instagram</span>
                 </div>
               </a>
             );
