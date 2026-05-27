@@ -1,10 +1,20 @@
 import { kv } from '@vercel/kv';
 import SubmitForm from './SubmitForm';
+import PpvButton from './PpvButton';
 
 export const dynamic = 'force-dynamic';
 import styles from './page.module.css';
 
 type Submission = { shortcode: string; thumbnail?: string | null; submittedAt: number };
+
+const GRADIENTS = [
+  'linear-gradient(135deg, #b71c1c, #e65100)',
+  'linear-gradient(135deg, #1b1b2f, #4a148c)',
+  'linear-gradient(135deg, #1a2a1a, #2e7d32)',
+  'linear-gradient(135deg, #0d2137, #01579b)',
+  'linear-gradient(135deg, #3e1a00, #bf360c)',
+  'linear-gradient(135deg, #1a0533, #6a1b9a)',
+];
 
 async function getSubmissions(): Promise<Submission[]> {
   try {
@@ -18,6 +28,9 @@ async function getSubmissions(): Promise<Submission[]> {
 export default async function Home() {
   const submissions = await getSubmissions();
   const count = submissions.length;
+
+  // Pick the PPV thumbnail from the last submission, so it looks real
+  const ppvThumbnail = submissions.at(-1)?.thumbnail ?? null;
 
   return (
     <>
@@ -53,43 +66,48 @@ export default async function Home() {
         </div>
       ) : (
         <main className={styles.grid}>
-          {submissions.map(({ shortcode, thumbnail }, i) => {
-            const gradients = [
-              'linear-gradient(135deg, #b71c1c, #e65100)',
-              'linear-gradient(135deg, #1b1b2f, #4a148c)',
-              'linear-gradient(135deg, #1a2a1a, #2e7d32)',
-              'linear-gradient(135deg, #0d2137, #01579b)',
-              'linear-gradient(135deg, #3e1a00, #bf360c)',
-              'linear-gradient(135deg, #1a0533, #6a1b9a)',
-            ];
-            return (
-              <a
-                key={shortcode}
-                href={`https://www.instagram.com/p/${shortcode}/`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.card}
-              >
-                {thumbnail ? (
-                  <img
-                    src={thumbnail}
-                    alt="Ooni pizza"
-                    className={styles.cardImg}
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className={styles.cardBg} style={{ background: gradients[i % gradients.length] }}>
-                    <span className={styles.cardEmoji}>🍕</span>
-                  </div>
-                )}
-                <div className={styles.cardOverlay}>
-                  <span className={styles.cardIcon}>🔒</span>
-                  <span className={styles.cardLabel}>Unlock this pizza</span>
-                  <span className={styles.cardSub}>view on Instagram</span>
+          {submissions.map(({ shortcode, thumbnail }, i) => (
+            <a
+              key={shortcode}
+              href={`https://www.instagram.com/p/${shortcode}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.card}
+            >
+              {i === 0 && (
+                <div className={styles.liveBadge}>
+                  <span className={styles.liveDot} />
+                  Currently baking
                 </div>
-              </a>
-            );
-          })}
+              )}
+              {thumbnail ? (
+                <img src={thumbnail} alt="Ooni pizza" className={styles.cardImg} loading="lazy" />
+              ) : (
+                <div className={styles.cardBg} style={{ background: GRADIENTS[i % GRADIENTS.length] }}>
+                  <span className={styles.cardEmoji}>🍕</span>
+                </div>
+              )}
+              <div className={styles.cardOverlay}>
+                <span className={styles.cardIcon}>🔒</span>
+                <span className={styles.cardLabel}>Unlock this pizza</span>
+                <span className={styles.cardSub}>view on Instagram</span>
+              </div>
+            </a>
+          ))}
+
+          {/* PPV card */}
+          <div className={styles.ppvCard}>
+            {ppvThumbnail && (
+              <img src={ppvThumbnail} alt="" className={styles.ppvImg} />
+            )}
+            <div className={styles.ppvOverlay}>
+              <span className={styles.ppvBadge}>PPV</span>
+              <div className={styles.ppvLock}>🔒</div>
+              <span className={styles.ppvLabel}>72-hour ferment. Full process.</span>
+              <span className={styles.ppvPrice}>Exclusive content. Not on Instagram.</span>
+              <PpvButton />
+            </div>
+          </div>
         </main>
       )}
 

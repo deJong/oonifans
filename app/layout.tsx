@@ -3,8 +3,20 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'OoniFans. The gallery.',
-  description: 'Real Ooni pizzas, submitted by people who take this way too seriously.',
+  description: 'Exclusive pizza content from Ooni creators. 100% SFW. A Stuurmen Branding Agency project.',
   icons: { icon: '/favicon.svg' },
+  openGraph: {
+    title: 'OoniFans. Strictly For Wood-fire.',
+    description: 'Exclusive pizza content from Ooni creators. 100% SFW. A Stuurmen Branding Agency project.',
+    url: 'https://oonifans.com',
+    siteName: 'OoniFans',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'OoniFans. Strictly For Wood-fire.',
+    description: 'Exclusive pizza content from Ooni creators. 100% SFW. A Stuurmen Branding Agency project.',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
