@@ -22,7 +22,18 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Cloudflare Web Analytics — free, no cookies, no GDPR issues */}
+        {/* Replace TOKEN with your Cloudflare analytics token after adding the site at dash.cloudflare.com/web-analytics */}
+        {process.env.CF_ANALYTICS_TOKEN && (
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={`{"token": "${process.env.CF_ANALYTICS_TOKEN}"}`}
+          />
+        )}
+      </body>
     </html>
   );
 }
